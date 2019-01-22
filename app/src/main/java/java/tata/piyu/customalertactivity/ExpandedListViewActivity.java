@@ -1,5 +1,6 @@
 package java.tata.piyu.customalertactivity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,32 @@ public class ExpandedListViewActivity extends AppCompatActivity {
         prepareListData();
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
         expandableListView.setAdapter(listAdapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(ExpandedListViewActivity.this, listDataHeader.get(groupPosition)+"Expanded", Toast.LENGTH_SHORT).show();
+            }
+        });
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        "Group Clicked " + listDataHeader.get(groupPosition),
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
+                Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) + ":"+listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
+              if(groupPosition==3)
+              {
+                  startActivity(new Intent("android.intent.action.ACTIVITSTART"));
+              }
+                return false;
+            }
+        });
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
